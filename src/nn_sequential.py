@@ -48,6 +48,6 @@ input = torch.ones(64,3,32,32)
 output = net(input)
 print(output.shape)
 
-writer = SummaryWriter(log_dir="logs_seq")
+writer = SummaryWriter(log_dir="../logs_seq")
 writer.add_graph(net,input)
 writer.close()

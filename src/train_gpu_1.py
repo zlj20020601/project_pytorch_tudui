@@ -2,15 +2,14 @@ import torch
 from torch.utils.data import DataLoader
 import torchvision
 from torch.utils.tensorboard import SummaryWriter
-import time
-from model1 import Net
+# from model1 import Net
 import torch.nn as nn
 # from model import LeNet
 import torch.optim as optim
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 import numpy as np
-
+import time
 # transform = transforms.Compose(
 #     [transforms.ToTensor(),
 #      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
@@ -32,15 +31,38 @@ train_loader = DataLoader(train_data, batch_size=64)
 test_loader = DataLoader(test_data, batch_size=64)
 
 # 创建网络模型
+class Net(nn.Module):
+    def __init__(self):
+        super(Net,self).__init__()
+        self.model1 = nn.Sequential(
+            nn.Conv2d(in_channels=3, out_channels=32, kernel_size=5, stride=1, padding=2),
+            nn.MaxPool2d(kernel_size=2),
+            nn.Conv2d(in_channels=32, out_channels=32, kernel_size=5, stride=1, padding=2),
+            nn.MaxPool2d(kernel_size=2),
+            nn.Conv2d(in_channels=32, out_channels=64, kernel_size=5, stride=1, padding=2),
+            nn.MaxPool2d(kernel_size=2),
+            nn.Flatten(),
+            nn.Linear(in_features=64*4*4, out_features=64),
+            nn.Linear(in_features=64, out_features=10)
+        )
+    def forward(self, x):
+        x = self.model1(x)
+        return x
+
 net = Net()
+if torch.cuda.is_available():
+    net = net.cuda()
 
 # 损失函数
 loss_fn = nn.CrossEntropyLoss()
+if torch.cuda.is_available():
+    loss_fn = loss_fn.cuda()
 
 # 优化器
 # learning_rate = 0.01
 learning_rate = 1e-2
 optimizer = optim.SGD(net.parameters(),lr=learning_rate)
+
 
 # 设置训练网络参数
 # 记录训练次数
@@ -49,7 +71,7 @@ total_train_step = 0
 total_test_step = 0
 # 训练轮数
 epochs = 10
-writer = SummaryWriter(log_dir='./log_model1')
+writer = SummaryWriter(log_dir='../log_model1')
 start_time = time.time()
 for i in range(epochs):
     print("------第{}轮训练开始------".format(i+1))
@@ -57,6 +79,10 @@ for i in range(epochs):
     net.train()
     for data in train_loader:
         inputs, labels = data
+        if torch.cuda.is_available():
+            inputs, labels = inputs.cuda(), labels.cuda()
+        inputs = inputs.cuda()
+        labels = labels.cuda()
         outputs = net(inputs)
         loss = loss_fn(outputs, labels)
         # 优化器优化模型
@@ -75,6 +101,9 @@ for i in range(epochs):
     total_accuracy = 0
     for data in test_loader:
         inputs, labels = data
+        if torch.cuda.is_available():
+            inputs = inputs.cuda()
+            labels = labels.cuda()
         outputs = net(inputs)
         loss = loss_fn(outputs, labels)
         total_test_loss += loss.item()
@@ -82,9 +111,9 @@ for i in range(epochs):
         total_accuracy += accuracy
         total_test_step += 1
     print("整体测试集上的loss：{}".format(total_test_loss))
-    print("整体测试集上的正确率：{}".format(total_accuracy))
+    print("整体测试集上的正确率：{}".format(total_accuracy/test_data_size))
     writer.add_scalar("loss", total_test_loss, total_test_step)
-    writer.add_scalar("accuracy", total_accuracy, total_test_step)
+    writer.add_scalar("accuracy", total_accuracy/test_data_size, total_test_step)
 
 writer.close()
 

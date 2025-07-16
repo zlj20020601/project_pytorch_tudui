@@ -12,7 +12,7 @@ classes = ('plane', 'car', 'bird', 'cat', 'deer',
            'dog', 'frog', 'horse', 'ship', 'truck')
 
 net = LeNet()
-net.load_state_dict(torch.load('LeNet.pth'))
+net.load_state_dict(torch.load('../lenet.pth'))
 
 im = Image.open('1.jpg')
 im = transform(im)

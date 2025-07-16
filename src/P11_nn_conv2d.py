@@ -20,7 +20,7 @@ class Zlj(nn.Module):
         return x
 zlj = Zlj()
 # print(zlj)
-writer = SummaryWriter("conv2d")
+writer = SummaryWriter("../conv2d")
 step = 0
 for data in dataloader:
     imgs,targets = data

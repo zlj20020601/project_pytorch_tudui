@@ -30,7 +30,7 @@ class Net(torch.nn.Module):
         output = self.maxpool1(input)
         return output
 
-writer = SummaryWriter(log_dir="logs_maxpool")
+writer = SummaryWriter(log_dir="../logs_maxpool")
 step = 0
 net = Net()
 for data in dataloader:

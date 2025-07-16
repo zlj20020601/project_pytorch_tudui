@@ -32,7 +32,7 @@ class MyData(Dataset):
     def __len__(self):
         return len(self.img_path)
 
-root_dir = r"D:\Pycharm\project\archive"
+root_dir = r"/archive"
 ants_label_dir = "ants"
 ants_dataset = MyData(root_dir,ants_label_dir)
 bees_label_dir = "bees"

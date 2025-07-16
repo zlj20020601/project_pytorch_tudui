@@ -77,7 +77,7 @@ total_train_step = 0
 total_test_step = 0
 # 训练轮数
 epochs = 10
-writer = SummaryWriter(log_dir='./log_model1')
+writer = SummaryWriter(log_dir='../log_model1')
 start_time = time.time()
 for i in range(epochs):
     print("------第{}轮训练开始------".format(i+1))

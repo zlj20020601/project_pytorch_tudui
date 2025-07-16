@@ -3,8 +3,8 @@ from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
 import cv2
 
-img_path = "archive/ants/707895295_009cf23188.jpg"
-writer = SummaryWriter(log_dir="logs")
+img_path = "../archive/ants/707895295_009cf23188.jpg"
+writer = SummaryWriter(log_dir="../logs")
 cv2_img = cv2.imread(img_path)
 # print(cv2_img.shape)
 img = Image.open(img_path)

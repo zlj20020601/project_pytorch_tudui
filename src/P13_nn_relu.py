@@ -24,7 +24,7 @@ dataloader = DataLoader(dataset=dataset, batch_size=64, shuffle=False,num_worker
 # net = Net()
 # output = net(input)
 # print(output)
-writer = SummaryWriter("logs_sigmoid")
+writer = SummaryWriter("../logs_sigmoid")
 
 class Net(nn.Module):
     def __init__(self):

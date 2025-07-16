@@ -3,8 +3,8 @@ from PIL import Image
 import  numpy as np
 
 
-writer = SummaryWriter("logs")
-image_path = "archive/bees/16838648_415acd9e3f.jpg"
+writer = SummaryWriter("../logs")
+image_path = "../archive/bees/16838648_415acd9e3f.jpg"
 img_PIL = Image.open(image_path)
 img_array = np.array(img_PIL)
 print(type(img_array))
