@@ -114,6 +114,7 @@ for i in range(epochs):
     print("整体测试集上的正确率：{}".format(total_accuracy/test_data_size))
     writer.add_scalar("loss", total_test_loss, total_test_step)
     writer.add_scalar("accuracy", total_accuracy/test_data_size, total_test_step)
+    torch.save(net, '../log_model1/model_{}.pth'.format(i))
 
 writer.close()
 
